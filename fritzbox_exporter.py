@@ -174,8 +174,8 @@ class FritzBoxCollector(object):
 
                 fritzbox_internet_online_monitor.add_metric([fb_serial, 'up', 'max'], online_monitor['Newmax_us'])
                 fritzbox_internet_online_monitor.add_metric([fb_serial, 'down', 'max'], online_monitor['Newmax_ds'])
-                fritzbox_internet_online_monitor.add_metric([fb_serial, 'up', 'curr'], (online_monitor['Newus_current_bps']).split(',')[0])
-                fritzbox_internet_online_monitor.add_metric([fb_serial, 'down', 'curr'], (online_monitor['Newds_current_bps']).split(',')[0])
+                fritzbox_internet_online_monitor.add_metric([fb_serial, 'up', 'curr'], online_monitor['Newus_current_bps'].split(',')[0])
+                fritzbox_internet_online_monitor.add_metric([fb_serial, 'down', 'curr'], online_monitor['Newds_current_bps'].split(',')[0])
 
                 # fritzbox_dsl_noise_margin_dB
                 fritzbox_dsl_noisemargin.add_metric([fb_serial, 'up'],
