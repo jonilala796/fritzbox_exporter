@@ -89,9 +89,8 @@ class FritzBoxCollector(object):
         fritzbox_dsl_datarate = GaugeMetricFamily('fritzbox_dsl_datarate_kbps', 'DSL datarate in kbps',
                                                   labels=['Serial', 'Direction', 'Type'])
 
-        fritzbox_internet_online_monitor = GaugeMetricFamily('fritzbox_internet_online_monitor', 'Online-Monitor stats',
-                                                             labels=['Serial', 'Direction', 'SyncGroupMode',
-                                                                     'SyncGroupName'])
+        fritzbox_internet_online_monitor = GaugeMetricFamily('fritzbox_internet_online_monitor', 'Online-Monitor stats in bps',
+                                                             labels=['Serial', 'Direction', 'Type'])
 
         fritzbox_dsl_noisemargin = GaugeMetricFamily('fritzbox_dsl_noise_margin_dB', 'Noise Margin in dB',
                                                      labels=['Serial', 'Direction'])
@@ -173,8 +172,10 @@ class FritzBoxCollector(object):
                 online_monitor = connection.call_action('WANCommonInterfaceConfig', 'X_AVM-DE_GetOnlineMonitor',
                                                 arguments={"NewSyncGroupIndex": 0})
 
-                fritzbox_internet_online_monitor.add_metric([fb_serial, 'up', online_monitor['NewSyncGroupMode'], online_monitor['NewSyncGroupName']], online_monitor['Newmax_us'])
-                fritzbox_internet_online_monitor.add_metric([fb_serial, 'down', online_monitor['NewSyncGroupMode'], online_monitor['NewSyncGroupName']], online_monitor['Newmax_ds'])
+                fritzbox_internet_online_monitor.add_metric([fb_serial, 'up', 'max'], online_monitor['Newmax_us'])
+                fritzbox_internet_online_monitor.add_metric([fb_serial, 'down', 'max'], online_monitor['Newmax_ds'])
+                fritzbox_internet_online_monitor.add_metric([fb_serial, 'up', 'curr'], online_monitor['Newus_current_bps'])
+                fritzbox_internet_online_monitor.add_metric([fb_serial, 'down', 'curr'], online_monitor['Newds_current_bps'])
 
                 # fritzbox_dsl_noise_margin_dB
                 fritzbox_dsl_noisemargin.add_metric([fb_serial, 'up'],
